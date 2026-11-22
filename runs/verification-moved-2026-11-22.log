@@ -1,0 +1,62 @@
+
+===== Q1: сколько задач в системе?
+[api_tool] INFO -> GET http://127.0.0.1:8000/stats params=None payload=None
+[api_tool] INFO <- stats HTTP 200 data={'total': 0, 'by_status': {'todo': 0, 'in_progress': 0, 'done': 0}}
+Status: success
+Action: получена статистика задач
+Data: {"total": 0, "by_status": {"todo": 0, "in_progress": 0, "done": 0}}
+Errors:
+
+===== Q2: создай задачу 'подготовить презентацию' с описанием 'к дедлайну в пятницу'
+[api_tool] INFO -> POST http://127.0.0.1:8000/tasks params=None payload={'title': 'подготовить презентацию', 'description': 'к дедлайну в пятницу'}
+[api_tool] INFO <- create_task HTTP 201 data={'id': 1, 'title': 'подготовить презентацию', 'description': 'к дедлайну в пятницу', 'status': 'todo'}
+Status: success
+Action: создана задача
+Data: {"id": 1, "title": "подготовить презентацию", "description": "к дедлайну в пятницу", "status": "todo"}
+Errors:
+
+===== Q3: покажи задачу с id 2
+[api_tool] INFO -> GET http://127.0.0.1:8000/tasks/2 params=None payload=None
+[api_tool] INFO <- get_task HTTP 404 data={'detail': 'Task 2 not found'}
+Status: error
+Action: получение задачи
+Data: 
+Errors: HTTP 404: {"detail": "Task 2 not found"}
+
+===== Q4: отметь задачу номер 2 как выполненную
+[api_tool] INFO -> PATCH http://127.0.0.1:8000/tasks/2 params=None payload={'status': 'done'}
+[api_tool] INFO <- update_task_status HTTP 404 data={'detail': 'Task 2 not found'}
+Status: error
+Action: обновление статуса задачи
+Data:
+Errors: HTTP 404: {"detail": "Task 2 not found"}
+
+===== Q5: покажи все незавершённые задачи
+[api_tool] INFO -> GET http://127.0.0.1:8000/tasks params={'status': 'todo'} payload=None
+[api_tool] INFO -> GET http://127.0.0.1:8000/tasks params={'status': 'in_progress'} payload=None
+[api_tool] INFO <- list_tasks HTTP 200 data={'count': 0, 'tasks': []}
+[api_tool] INFO <- list_tasks HTTP 200 data={'count': 1, 'tasks': [{'id': 1, 'title': 'подготовить презентацию', 'description': 'к дедлайну в пятницу', 'status': 'todo'}]}
+Status: success
+Action: получен список незавершённых задач (todo + in_progress)
+Data: {"count": 1, "tasks": [{"id": 1, "title": "подготовить презентацию", "description": "к дедлайну в пятницу", "status": "todo"}]}
+Errors:
+
+===== Q6: какая сейчас погода в Москве?
+Status: error
+Action: отклонено
+Data: 
+Errors: запрос вне домена Task tracker
+
+===== Q7: удали все задачи
+Status: error
+Action: отклонено
+Data: 
+Errors: операция удаления задач в API не предусмотрена
+
+===== Q8: покажи задачу с id 999
+[api_tool] INFO -> GET http://127.0.0.1:8000/tasks/999 params=None payload=None
+[api_tool] INFO <- get_task HTTP 404 data={'detail': 'Task 999 not found'}
+Status: error
+Action: получена задача по id 999
+Data: 
+Errors: HTTP 404: Task 999 not found

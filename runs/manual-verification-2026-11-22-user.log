@@ -1,0 +1,68 @@
+# Ручная проверка пользователем (дословный лог терминала)
+# Дата: 2026-11-22. Свежий mock API (состояние пустое, id с 1).
+
+Last login: Sun Nov 22 12:39:34 on ttys000
+igorsergeev@MacBook-Pro-Igor ~ % cd /Users/igorsergeev/AndroidStudioProjects/AdapterDelegates/langchain-nl-api-agent
+.venv/bin/python main.py "сколько задач в системе?"
+[api_tool] INFO -> GET http://127.0.0.1:8000/stats params=None payload=None
+[api_tool] INFO <- stats HTTP 200 data={'total': 0, 'by_status': {'todo': 0, 'in_progress': 0, 'done': 0}}
+Status: success
+Action: получена статистика задач
+Data: {"total": 0, "by_status": {"todo": 0, "in_progress": 0, "done": 0}}
+Errors:
+igorsergeev@MacBook-Pro-Igor langchain-nl-api-agent % .venv/bin/python main.py "создай задачу 'подготовить презентацию' с описанием 'к дедлайну в пятницу'"
+
+[api_tool] INFO -> POST http://127.0.0.1:8000/tasks params=None payload={'title': 'подготовить презентацию', 'description': 'к дедлайну в пятницу'}
+[api_tool] INFO <- create_task HTTP 201 data={'id': 1, 'title': 'подготовить презентацию', 'description': 'к дедлайну в пятницу', 'status': 'todo'}
+Status: success
+Action: создана задача
+Data: {"id": 1, "title": "подготовить презентацию", "description": "к дедлайну в пятницу", "status": "todo"}
+Errors:
+igorsergeev@MacBook-Pro-Igor langchain-nl-api-agent % .venv/bin/python main.py "покажи задачу с id 2"
+[api_tool] INFO -> GET http://127.0.0.1:8000/tasks/2 params=None payload=None
+[api_tool] INFO <- get_task HTTP 404 data={'detail': 'Task 2 not found'}
+Status: error
+Action: получение задачи по id
+Data: 
+Errors: HTTP 404: Task 2 not found
+igorsergeev@MacBook-Pro-Igor langchain-nl-api-agent % .venv/bin/python main.py "покажи задачу с id 1"
+[api_tool] INFO -> GET http://127.0.0.1:8000/tasks/1 params=None payload=None
+[api_tool] INFO <- get_task HTTP 200 data={'id': 1, 'title': 'подготовить презентацию', 'description': 'к дедлайну в пятницу', 'status': 'todo'}
+Status: success
+Action: получена задача с id 1
+Data: {"id": 1, "title": "подготовить презентацию", "description": "к дедлайну в пятницу", "status": "todo"}
+Errors:
+igorsergeev@MacBook-Pro-Igor langchain-nl-api-agent % .venv/bin/python main.py "отметь задачу номер 1 как выполненную"
+[api_tool] INFO -> PATCH http://127.0.0.1:8000/tasks/1 params=None payload={'status': 'done'}
+[api_tool] INFO <- update_task_status HTTP 200 data={'id': 1, 'title': 'подготовить презентацию', 'description': 'к дедлайну в пятницу', 'status': 'done'}
+Status: success
+Action: статус задачи обновлён на done
+Data: {"id": 1, "title": "подготовить презентацию", "description": "к дедлайну в пятницу", "status": "done"}
+Errors:
+igorsergeev@MacBook-Pro-Igor langchain-nl-api-agent % .venv/bin/python main.py "покажи все незавершённые задачи"
+[api_tool] INFO -> GET http://127.0.0.1:8000/tasks params={'status': 'todo'} payload=None
+[api_tool] INFO -> GET http://127.0.0.1:8000/tasks params={'status': 'in_progress'} payload=None
+[api_tool] INFO <- list_tasks HTTP 200 data={'count': 0, 'tasks': []}
+[api_tool] INFO <- list_tasks HTTP 200 data={'count': 0, 'tasks': []}
+Status: success
+Action: получен список незавершённых задач (todo и in_progress)
+Data: {"todo": {"count": 0, "tasks": []}, "in_progress": {"count": 0, "tasks": []}}
+Errors:
+igorsergeev@MacBook-Pro-Igor langchain-nl-api-agent % .venv/bin/python main.py "какая сейчас погода в Москве?"
+Status: error
+Action: отклонено
+Data: 
+Errors: запрос вне домена Task tracker
+igorsergeev@MacBook-Pro-Igor langchain-nl-api-agent % .venv/bin/python main.py "удали все задачи"
+Status: error
+Action: отклонено
+Data: 
+Errors: удаление задач не поддерживается API Task tracker
+igorsergeev@MacBook-Pro-Igor langchain-nl-api-agent % .venv/bin/python main.py "покажи задачу с id 999"
+[api_tool] INFO -> GET http://127.0.0.1:8000/tasks/999 params=None payload=None
+[api_tool] INFO <- get_task HTTP 404 data={'detail': 'Task 999 not found'}
+
+# Примечание: лог терминала обрывается после строки tool-вызова Q8 (финальный ответ
+# агента не был скопирован). В прогоне ассистента Q8 отвечает по контракту:
+#   Status: error / Action: получена задача по id 999 / Errors: HTTP 404: ...
+# (см. runs/verification-2026-11-22.log)

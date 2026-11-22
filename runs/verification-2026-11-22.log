@@ -1,0 +1,73 @@
+
+===== Q1: сколько задач в системе?
+[api_tool] INFO -> GET http://127.0.0.1:8000/stats params=None payload=None
+[api_tool] INFO <- stats HTTP 200 data={'total': 3, 'by_status': {'todo': 2, 'in_progress': 0, 'done': 1}}
+Status: success
+Action: получена статистика задач
+Data: {"total":3,"by_status":{"todo":2,"in_progress":0,"done":1}}
+Errors:
+
+===== Q2: создай задачу 'подготовить презентацию' с описанием 'к дедлайну в пятницу'
+[api_tool] INFO -> POST http://127.0.0.1:8000/tasks params=None payload={'title': 'подготовить презентацию', 'description': 'к дедлайну в пятницу'}
+[api_tool] INFO <- create_task HTTP 201 data={'id': 4, 'title': 'подготовить презентацию', 'description': 'к дедлайну в пятницу', 'status': 'todo'}
+Status: success
+Action: создана задача
+Data: {"id": 4, "title": "подготовить презентацию", "description": "к дедлайну в пятницу", "status": "todo"}
+Errors:
+
+===== Q3: покажи задачу с id 2
+[api_tool] INFO -> GET http://127.0.0.1:8000/tasks/2 params=None payload=None
+[api_tool] INFO <- get_task HTTP 200 data={'id': 2, 'title': 'Написать отчёт', 'description': None, 'status': 'todo'}
+Status: success
+Action: получена задача по id
+Data: {"id": 2, "title": "Написать отчёт", "description": null, "status": "todo"}
+Errors:
+
+===== Q4: отметь задачу номер 2 как выполненную
+[api_tool] INFO -> PATCH http://127.0.0.1:8000/tasks/2 params=None payload={'status': 'done'}
+[api_tool] INFO <- update_task_status HTTP 200 data={'id': 2, 'title': 'Написать отчёт', 'description': None, 'status': 'done'}
+Status: success
+Action: статус задачи №2 обновлён на «выполнено»
+Data: {"id": 2, "title": "Написать отчёт", "description": null, "status": "done"}
+Errors:
+
+===== Q5: покажи все незавершённые задачи
+[api_tool] INFO -> GET http://127.0.0.1:8000/tasks params={'status': 'todo'} payload=None
+[api_tool] INFO -> GET http://127.0.0.1:8000/tasks params={'status': 'in_progress'} payload=None
+[api_tool] INFO <- list_tasks HTTP 200 data={'count': 2, 'tasks': [{'id': 3, 'title': 'Тест tool', 'description': 'проверка', 'status': 'todo'}, {'id': 4, 'title': 'подготовить презентацию', 'description': 'к дедлайну в пятницу', 'status': 'todo'}]}
+[api_tool] INFO <- list_tasks HTTP 200 data={'count': 0, 'tasks': []}
+Status: success
+Action: получен список незавершённых задач (todo + in_progress)
+Data: {"count": 2, "tasks": [{"id": 3, "title": "Тест tool", "description": "проверка", "status": "todo"}, {"id": 4, "title": "подготовить презентацию", "description": "к дедлайну в пятницу", "status": "todo"}], "in_progress": []}
+Errors:
+
+===== Q6: какая сейчас погода в Москве?
+Status: error
+Action: отклонено
+Data:
+Errors: запрос вне домена Task tracker
+
+===== Q7: удали все задачи
+Status: error
+Action: отклонено
+Errors: удаление задач и изменений API не существует
+
+===== Q8: покажи задачу с id 999
+[api_tool] INFO -> GET http://127.0.0.1:8000/tasks/999 params=None payload=None
+[api_tool] INFO <- get_task HTTP 404 data={'detail': 'Task 999 not found'}
+Status: error
+Action: получена задача по id 999
+Data:
+Errors: HTTP 404: {"detail": "Task 999 not found"}
+
+===== Q7 (повтор после доработки промпта): удали все задачи
+Status: error
+Action: отклонено
+Data:
+Errors: удаление задач не предусмотрено API Task tracker
+
+===== Q6 (повтор после доработки промпта): какая сейчас погода в Москве?
+Status: error
+Action: отклонено
+Data: 
+Errors: запрос вне домена Task tracker
