@@ -1,0 +1,7 @@
+# Зависимости зафиксированы (проверено на Python 3.15.2, macOS)
+langchain==1.5.2
+langchain-openai==1.8.5
+fastapi==0.165.0
+uvicorn[standard]==0.54.0
+httpx==0.28.1
+python-dotenv==1.2.4
