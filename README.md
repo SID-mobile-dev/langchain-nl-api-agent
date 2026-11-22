@@ -1,5 +1,8 @@
 # NL-API Agent — минимальный AI-агент-обёртка над API (LangChain)
 
+Клонирование: `git clone https://github.com/SID-mobile-dev/langchain-nl-api-agent.git`
+(далее все команды выполняются из корня репозитория)
+
 Прототип «natural-language SDK» для сервиса **Task tracker**: агент принимает запрос на
 естественном языке, интерпретирует намерение, вызывает нужные API-методы через tool
 и возвращает структурированный результат со статусом выполнения.
@@ -30,7 +33,7 @@ LangChain/
 Скопируйте шаблон конфигурации и заполните ключом провайдера:
 
 ```bash
-cd /Users/igorsergeev/PycharmProjects/LangChain
+cd langchain-nl-api-agent  # каталог, куда склонирован репозиторий
 # если .env ещё нет — создайте из шаблона и впишите ключ:
 cp .env.example .env
 # вписать MIMO_API_KEY=<ваш ключ> (и при необходимости MIMO_MODEL / MIMO_BASE_URL)
@@ -65,7 +68,7 @@ python3 -m venv .venv
 
 **0. Подготовка** (если ещё не сделано):
 ```bash
-cd /Users/igorsergeev/PycharmProjects/LangChain
+cd langchain-nl-api-agent  # каталог, куда склонирован репозиторий
 python3 -m venv .venv
 .venv/bin/pip install -r requirements.txt
 # .env: если файла нет — cp .env.example .env и вписать MIMO_API_KEY=<ключ>;

@@ -2,7 +2,8 @@
 
 Отчёт ведётся по ходу работы: промпты, неудачные попытки и их разбор фиксировались сразу, а не постфактум.
 
-- **Проект**: самостоятельный git-репозиторий `/Users/igorsergeev/PycharmProjects/LangChain` (ТЗ: «минимальный репозиторий **или отдельная папка в существующем**»). Начинался как папка `langchain-nl-api-agent/` в форке AdapterDelegates (ветка `homework/langchain-agent`), по ходу работы перенесён в отдельный проект — история переноса в разделе 5, «Шаг 5.6».
+- **Проект**: самостоятельный git-репозиторий **https://github.com/SID-mobile-dev/langchain-nl-api-agent** (ТЗ: «минимальный репозиторий **или отдельная папка в существующем**»). Начинался как папка `langchain-nl-api-agent/` в форке AdapterDelegates (ветка `homework/langchain-agent`), по ходу работы перенесён в отдельный проект — история переноса в разделе 5, «Шаг 5.6».
+- **Пути**: все команды даны относительно корня репозитория — любой пользователь запускает после `git clone`. Абсолютные пути встречаются только в дословных цитатах (промпты, логи) и сохранены там как исторический факт.
 - **Сдача**: публичный репозиторий **https://github.com/SID-mobile-dev/langchain-nl-api-agent** (ветка `master`, `REPORT.md` в корне репозитория).
 - **Дата**: 22 ноября 2026.
 - **LLM**: Xiaomi MiMo (OpenAI-совместимый API), модель `xiaomi/mimo-v2.6-flash`.
@@ -28,7 +29,7 @@
 Настройка (секреты только в `.env`, в git не коммитятся):
 
 ```bash
-cd /Users/igorsergeev/PycharmProjects/LangChain
+cd langchain-nl-api-agent  # каталог, куда склонирован репозиторий
 cp .env.example .env      # только если .env ещё НЕТ! Существующий перезаписывать нельзя — затрётся ключ
 # вписать: MIMO_API_KEY=<ключ провайдера>
 ```
@@ -62,7 +63,7 @@ cp .env.example .env      # только если .env ещё НЕТ! Сущес
 ### 1.3 Как запустить агента (команды)
 
 ```bash
-cd /Users/igorsergeev/PycharmProjects/LangChain
+cd langchain-nl-api-agent  # каталог, куда склонирован репозиторий
 python3 -m venv .venv
 .venv/bin/pip install -r requirements.txt
 # .env: создать и вписать MIMO_API_KEY (см. 1.1)
@@ -245,7 +246,7 @@ igorsergeev@MacBook-Pro-Igor langchain-nl-api-agent % .venv/bin/python main.py "
 
 ### 3.3 Контрольный прогон после переноса проекта
 
-После переноса в `/Users/igorsergeev/PycharmProjects/LangChain` все 8 запросов повторены
+После переноса проекта в самостоятельный репозиторий (раздел 5, «Шаг 5.6») все 8 запросов повторены
 на свежем сервере (id с 1) — `runs/verification-moved-2026-11-22.log`:
 
 | # | Запрос | Фактически |
@@ -575,7 +576,7 @@ id 1. Это ожидаемое поведение (в инструкции ог
 > Как оформить git/сдачу после переноса? → **«Отдельный git-репозиторий (Recommended)»**
 
 Что сделано при переносе:
-- файлы проекта скопированы в `/Users/igorsergeev/PycharmProjects/LangChain` (без `.venv`
+- файлы проекта скопированы в каталог нового проекта (без `.venv`
   и `__pycache__`); шаблонный `main.py` PyCharm заменён CLI-файлом агента (шаблон —
   стандартная заготовка `print_hi('PyCharm')` без логики);
 - зависимости из `requirements.txt` установлены в **существующий** `.venv` целевой папки
